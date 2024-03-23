@@ -1,0 +1,40 @@
+{
+  "name": "acordia",
+  "version": "0.0.0",
+  "description": "A Discord client",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier . --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Korrdyn/Acordia.git"
+  },
+  "keywords": [
+    "discord",
+    "typescript"
+  ],
+  "author": "Korrdyn",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Korrdyn/Acordia/issues"
+  },
+  "homepage": "https://github.com/Korrdyn/Acordia#readme",
+  "dependencies": {
+    "@discordjs/collection": "^2.0.0",
+    "@discordjs/rest": "^2.2.0",
+    "discord-api-types": "^0.37.76",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3"
+  }
+}
