@@ -2,9 +2,19 @@
   "name": "acordia",
   "version": "0.0.0",
   "description": "A Discord client",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "build": "tsup src --format cjs,esm --dts --clean --no-splitting"
   },
   "repository": {
     "type": "git",
@@ -23,6 +33,7 @@
   "dependencies": {
     "@discordjs/collection": "^2.0.0",
     "@discordjs/rest": "^2.2.0",
+    "@discordjs/ws": "^1.0.2",
     "discord-api-types": "^0.37.76",
     "eventemitter3": "^5.0.1"
   },
@@ -35,6 +46,7 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.3"
   }
 }

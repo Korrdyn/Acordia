@@ -1,23 +1,25 @@
-export type BitType<Flags extends Record<string, bigint | number | string>> = bigint | number | Bitfield<Flags> | Array<BitType<Flags>> | keyof Flags;
+export type BitType<Flags extends Record<string, number | bigint | string>> = number | bigint | Bitfield<Flags> | Array<BitType<Flags>> | keyof Flags;
+export type BitfieldResolvable = number | bigint | string | Array<number | bigint | string>;
 
-export default class Bitfield<Flags extends Record<string, bigint | number | string>> {
+export class Bitfield<Flags extends Record<string, number | bigint | string>> {
   bits: bigint;
-  flags = {} as Flags;
+  flags: Flags;
   defaultBit = BigInt(0);
 
-  constructor(bits?: BitType<Flags> | string) {
-    this.bits = this.resolve(bits ?? this.defaultBit);
+  constructor(bits?: BitType<Flags>, flags?: Flags) {
+    this.flags = flags ?? ({} as Flags);
+    this.bits = this.resolve((bits as BitfieldResolvable) ?? this.defaultBit);
   }
 
   has(bit: BitType<Flags>): boolean {
-    const resolved = this.resolve(bit);
+    const resolved = this.resolve(bit as BitfieldResolvable);
     return (this.bits & resolved) === resolved;
   }
 
   add(...bits: Array<BitType<Flags>>) {
     let total = this.defaultBit;
     for (const bit of bits) {
-      total |= this.resolve(bit);
+      total |= this.resolve(bit as BitfieldResolvable);
     }
     this.bits |= total;
     return this;
@@ -26,14 +28,14 @@ export default class Bitfield<Flags extends Record<string, bigint | number | str
   remove(...bits: Array<BitType<Flags>>) {
     let total = this.defaultBit;
     for (const bit of bits) {
-      total |= this.resolve(bit);
+      total |= this.resolve(bit as BitfieldResolvable);
     }
     this.bits &= ~total;
     return this;
   }
 
   get json() {
-    const obj: Record<string, bigint | number | string> = {
+    const obj: Record<string, number | bigint | string> = {
       _bits: this.bits,
     };
 
@@ -43,7 +45,7 @@ export default class Bitfield<Flags extends Record<string, bigint | number | str
     return obj;
   }
 
-  resolve(bit: BitType<Flags>): bigint {
+  resolve(bit: BitfieldResolvable): bigint {
     const { defaultBit } = this;
     if (typeof bit === 'number' || typeof bit === 'bigint') return BigInt(bit);
     if (bit instanceof Bitfield) return bit.bits;
