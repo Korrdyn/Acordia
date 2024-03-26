@@ -36,4 +36,5 @@ export interface IClientOptions {
   largeThreshold?: number;
   guildTimeout?: number;
   presence?: GatewayPresenceUpdateData;
+  messageCacheSize?: number;
 }

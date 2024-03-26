@@ -1,4 +1,4 @@
-export type BitType<Flags extends Record<string, number | bigint | string>> = number | bigint | Bitfield<Flags> | Array<BitType<Flags>> | keyof Flags;
+export type BitType<Flags extends Record<string, number | bigint | string>> = number | bigint | string | Bitfield<Flags> | Array<BitType<Flags>> | keyof Flags;
 export type BitfieldResolvable = number | bigint | string | Array<number | bigint | string>;
 
 export class Bitfield<Flags extends Record<string, number | bigint | string>> {

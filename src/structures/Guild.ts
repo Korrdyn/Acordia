@@ -2,7 +2,6 @@ import {
   APIEmoji,
   APIGuild,
   APIGuildWelcomeScreen,
-  APIRole,
   APISticker,
   GatewayGuildCreateDispatchData,
   GuildDefaultMessageNotifications,
@@ -16,6 +15,9 @@ import {
 import { Shard } from '../clients/Shard';
 import { BaseGuild } from './BaseGuild';
 import { GuildMemberManager } from '../managers/GuildMemberManager';
+import { GuildRoleManager } from '../managers/GuildRoleManager';
+import { GuildChannelManager } from '../managers/GuildChannelManager';
+import { APIGuildChannelType } from './GuildChannel';
 
 export class Guild extends BaseGuild {
   ownerId!: string;
@@ -26,7 +28,6 @@ export class Guild extends BaseGuild {
   widgetChannelId!: string | null;
   defaultMessageNotifications!: GuildDefaultMessageNotifications;
   explicitContentFilter!: GuildExplicitContentFilter;
-  roles!: APIRole[];
   emojis!: APIEmoji[];
   mfaLevel!: GuildMFALevel;
   systemChannelId!: string | null;
@@ -46,10 +47,14 @@ export class Guild extends BaseGuild {
   safetyAlertChannelId!: string | null;
   members: GuildMemberManager;
   membersCount!: number;
+  roles: GuildRoleManager;
+  channels: GuildChannelManager;
 
   constructor(shard: Shard, data: GatewayGuildCreateDispatchData) {
     super(shard, data);
     this.members = new GuildMemberManager(this);
+    this.roles = new GuildRoleManager(this);
+    this.channels = new GuildChannelManager(this);
     this.patch(data);
   }
 
@@ -63,7 +68,6 @@ export class Guild extends BaseGuild {
     this.widgetChannelId = guild.widget_channel_id ?? null;
     this.defaultMessageNotifications = guild.default_message_notifications;
     this.explicitContentFilter = guild.explicit_content_filter;
-    this.roles = guild.roles;
     this.emojis = guild.emojis;
     this.mfaLevel = guild.mfa_level;
     this.systemChannelId = guild.system_channel_id;
@@ -82,14 +86,20 @@ export class Guild extends BaseGuild {
     this.hubType = guild.hub_type ?? null;
     this.safetyAlertChannelId = guild.safety_alerts_channel_id;
 
+    for (const role of guild.roles) this.roles.add(role);
+
     if ('channels' in guild) {
       // data is GatewayGuildCreateDispatchData
 
       this.membersCount = guild.member_count;
 
-      for (const member of guild.members) {
-        this.members.add(member);
-      }
+      for (const member of guild.members) this.members.add(member);
+
+      for (const channel of guild.channels) this.channels.add(channel as APIGuildChannelType);
     }
+  }
+
+  get self() {
+    return this.members.get(this.client.application.id)!;
   }
 }

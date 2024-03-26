@@ -8,6 +8,7 @@ import { Status } from '../utils/Status';
 import { Events } from '../types/events/ClientEvents';
 import { GatewayCloseCodes, GatewayDispatchEvents, GatewayDispatchPayload } from 'discord-api-types/v10';
 import * as PacketHandlers from './events';
+import { PartialApplication } from '../structures/PartialApplication';
 
 const readyWhitelist = [
   GatewayDispatchEvents.Ready,
@@ -100,6 +101,8 @@ export class ShardManager extends Collection<number, Shard> {
 
     this.ws!.on(WebSocketShardEvents.Ready, ({ data, shardId }) => {
       this.get(shardId)!.handleReadyPacket(data);
+      this.client.application ??= new PartialApplication(this.client, data.application);
+      this.client.users.add(data.user);
     });
 
     this.ws!.on(WebSocketShardEvents.Closed, ({ code, shardId }) => {
