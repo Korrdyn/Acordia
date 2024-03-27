@@ -1,4 +1,4 @@
-import { GatewayGuildCreateDispatchData } from 'discord-api-types/v10';
+import { GatewayGuildCreateDispatchData, Routes } from 'discord-api-types/v10';
 import { Manager } from './Manager';
 import { Shard } from '../clients/Shard';
 import { Guild } from '../structures/Guild';
@@ -17,5 +17,9 @@ export class GuildManager extends Manager<Guild> {
       this.set(data.id, guild);
     }
     return guild;
+  }
+
+  leave(id: string) {
+    return this.client.rest.delete(Routes.userGuild(id));
   }
 }

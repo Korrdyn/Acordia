@@ -1,6 +1,7 @@
 import { GatewayDispatchPayload } from 'discord-api-types/v10';
 import { Guild } from '../../structures/Guild';
 import { Message } from '../../structures/Message';
+import { UnavailableGuild } from '../../structures/UnavailableGuild';
 
 export enum Events {
   Ready = 'ready',
@@ -11,8 +12,9 @@ export enum Events {
   ShardReconnecting = 'shardReconnecting',
   ShardError = 'shardError',
   GuildCreate = 'guildCreate',
+  GuildDelete = 'guildDelete',
   GuildAvailable = 'guildAvailable',
-  MessageCreate = 'messageCreate'
+  MessageCreate = 'messageCreate',
 }
 
 export interface IEvents {
@@ -32,6 +34,7 @@ export interface IEvents {
   shardReconnecting: (shard: number) => any;
   shardError: (shard: number, error: Error) => any;
   guildCreate: (guild: Guild) => any;
+  guildDelete: (guild: Guild | UnavailableGuild) => any;
   guildAvailable: (guild: Guild) => any;
   messageCreate: (message: Message) => any;
 }
