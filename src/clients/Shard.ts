@@ -1,9 +1,9 @@
 import EventEmitter from 'eventemitter3';
 import { ShardManager } from './ShardManager';
-import { Status } from '../utils/Status';
+import { Status } from '@utils/Status';
 import { SessionInfo } from '@discordjs/ws';
 import { GatewayReadyDispatchData, GatewaySendPayload } from 'discord-api-types/v10';
-import { IShardEvents, ShardEvents } from '../types/events/ShardEvents';
+import { IShardEvents, ShardEvents } from '@typings/events/ShardEvents';
 import { Client } from './Client';
 
 export class Shard extends EventEmitter<IShardEvents> {

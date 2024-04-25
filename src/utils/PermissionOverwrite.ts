@@ -1,5 +1,5 @@
 import { APIOverwrite, PermissionFlagsBits } from 'discord-api-types/v10';
-import { BitType } from './Bitfield';
+import { BitType } from '@utils/Bitfield';
 import { PermissionBitfield } from './PermissionBitfield';
 
 type Flags = typeof PermissionFlagsBits;

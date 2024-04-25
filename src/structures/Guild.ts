@@ -12,14 +12,14 @@ import {
   GuildPremiumTier,
   GuildSystemChannelFlags,
 } from 'discord-api-types/v10';
-import { Shard } from '../clients/Shard';
-import { BaseGuild } from './BaseGuild';
-import { GuildMemberManager } from '../managers/GuildMemberManager';
-import { GuildRoleManager } from '../managers/GuildRoleManager';
-import { GuildChannelManager } from '../managers/GuildChannelManager';
-import { APIGuildChannelType } from './GuildChannel';
+import { Shard } from '@clients/Shard';
+import { PartialGuild } from '@structures/PartialGuild';
+import { GuildMemberManager } from '@managers/GuildMemberManager';
+import { GuildRoleManager } from '@managers/GuildRoleManager';
+import { GuildChannelManager } from '@managers/GuildChannelManager';
+import { APIGuildChannelType } from '@structures/GuildChannel';
 
-export class Guild extends BaseGuild {
+export class Guild extends PartialGuild {
   ownerId!: string;
   discoverySplash!: string | null;
   afkChannelId!: string | null;

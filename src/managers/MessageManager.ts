@@ -1,7 +1,7 @@
 import { Message } from '../structures/Message';
 import { APIMessage } from 'discord-api-types/v10';
 import { Manager } from './Manager';
-import { TextBasedChannel } from '../types/ChannelTypes';
+import { TextBasedChannel } from '@typings/ChannelTypes';
 
 export class MessageManager extends Manager<Message> {
   channel: TextBasedChannel;

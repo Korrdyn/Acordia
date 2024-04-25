@@ -18,16 +18,15 @@ import {
   GatewayMessageCreateDispatchData,
   MessageType,
 } from 'discord-api-types/v10';
-import { Base } from './Base';
-import { Guild } from './Guild';
-import { GuildMember } from './GuildMember';
-import { User } from './User';
+import { Base } from '@structures/Base';
+import { GuildMember } from '@structures/GuildMember';
+import { User } from '@structures/User';
 import { Collection } from '@discordjs/collection';
-import { MessageFlagBitfield } from '../utils/MessageFlagBitfield';
-import { TextBasedChannel } from '../types/ChannelTypes';
+import { MessageFlagBitfield } from '@utils/MessageFlagBitfield';
+import { TextBasedChannel } from '@typings/ChannelTypes';
+import { Guild } from '@structures/Guild';
 
 export class Message extends Base {
-  guild: Guild | null = null;
   member: GuildMember | null = null;
   channel: TextBasedChannel;
   mentions = new Collection<string, User>();
@@ -100,6 +99,11 @@ export class Message extends Base {
       }
     }
 
+    if (data.member && this.guild) {
+      data.member.user = data.author;
+      this.member = this.guild.members.add(data.member);
+    }
+
     this.mentionedRoles = data.mention_roles;
     // TODO: Parse channel mentions once channels are done
     this.mentionedChannels = data.mention_channels ?? [];
@@ -124,5 +128,9 @@ export class Message extends Base {
     this.position = data.position ?? null;
     this.roleSubscriptionData = data.role_subscription_data ?? null;
     this.resolved = data.resolved ?? null;
+  }
+
+  get guild(): Guild | null {
+    return this.channel.guild ?? null;
   }
 }

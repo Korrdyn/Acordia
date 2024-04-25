@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { PermissionOverwrite } from '../utils/PermissionOverwrite';
+import { PermissionOverwrite } from '@utils/PermissionOverwrite';
 import { APIOverwrite } from 'discord-api-types/v10';
 
 export class PermissionOverwriteManager extends Collection<string, PermissionOverwrite> {

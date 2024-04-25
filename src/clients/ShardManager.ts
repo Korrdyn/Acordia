@@ -1,11 +1,11 @@
 import { Collection } from '@discordjs/collection';
 import { CloseCodes, WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
 import { Client } from './Client';
-import { GatewayIntentBitfield } from '../utils/GatewayIntentsBitfield';
+import { GatewayIntentBitfield } from '@utils/GatewayIntentsBitfield';
 import { Shard } from './Shard';
-import { ShardEvents } from '../types/events/ShardEvents';
-import { Status } from '../utils/Status';
-import { Events } from '../types/events/ClientEvents';
+import { ShardEvents } from '@typings/events/ShardEvents';
+import { Status } from '@utils/Status';
+import { Events } from '@typings/events/ClientEvents';
 import { GatewayCloseCodes, GatewayDispatchEvents, GatewayDispatchPayload } from 'discord-api-types/v10';
 import * as PacketHandlers from './events';
 import { PartialApplication } from '../structures/PartialApplication';

@@ -1,7 +1,7 @@
-import { APIRole, APIRoleTags, Permissions, RoleFlags } from 'discord-api-types/v10';
-import { Base } from './Base';
-import { Guild } from './Guild';
-import { PermissionBitfield } from '../utils/PermissionBitfield';
+import { APIRole, APIRoleTags, RoleFlags } from 'discord-api-types/v10';
+import { Base } from '@structures/Base';
+import { Guild } from '@structures/Guild';
+import { PermissionBitfield } from '@utils/PermissionBitfield';
 
 export class Role extends Base {
   /**

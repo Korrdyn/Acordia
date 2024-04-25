@@ -14,7 +14,7 @@
   },
   "scripts": {
     "format": "prettier . --write",
-    "build": "tsup src --format cjs,esm --dts --clean --no-splitting"
+    "build": "tsup src --format cjs,esm --dts --clean"
   },
   "repository": {
     "type": "git",

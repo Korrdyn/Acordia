@@ -40,7 +40,7 @@ export class Bitfield<Flags extends Record<string, number | bigint | string>> {
     };
 
     for (const flag in this.flags) {
-      if (this.has(this.flags[flag]!)) obj[flag] = this.flags[flag]!;
+      if (this.has(this.flags[flag]! as BitType<Flags>)) obj[flag] = this.flags[flag]!;
     }
     return obj;
   }

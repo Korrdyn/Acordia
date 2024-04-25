@@ -1,5 +1,5 @@
 import { MessageFlags } from 'discord-api-types/v10';
-import { BitType, Bitfield } from './Bitfield';
+import { BitType, Bitfield } from '@utils/Bitfield';
 
 type Flags = typeof MessageFlags;
 

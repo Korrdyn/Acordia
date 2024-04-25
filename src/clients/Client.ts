@@ -1,14 +1,14 @@
 import EventEmitter from 'eventemitter3';
-import { IEvents } from '../types/events/ClientEvents';
-import { IClientOptions } from '../types/ClientOptions';
+import { IEvents } from '../typings/events/ClientEvents';
+import { IClientOptions } from '@typings/ClientOptions';
 import { REST } from '@discordjs/rest';
 import pkg from '../../package.json';
-import { AcordiaError } from '../utils/AcordiaError';
-import { ShardManager } from './ShardManager';
-import { GuildManager } from '../managers/GuildManager';
-import { UserManager } from '../managers/UserManager';
-import { PartialApplication } from '../structures/PartialApplication';
-import { IClientOptionDefaults, Options } from '../utils/Options';
+import { AcordiaError } from '@utils/AcordiaError';
+import { ShardManager } from '@clients/ShardManager';
+import { GuildManager } from '@managers/GuildManager';
+import { UserManager } from '@managers/UserManager';
+import { PartialApplication } from '@structures/PartialApplication';
+import { IClientOptionDefaults, Options } from '@utils/Options';
 
 export class Client extends EventEmitter<IEvents> {
   readonly options: IClientOptionDefaults;

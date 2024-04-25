@@ -1,7 +1,7 @@
 import { GatewayDispatchPayload } from 'discord-api-types/v10';
-import { Guild } from '../../structures/Guild';
-import { Message } from '../../structures/Message';
-import { UnavailableGuild } from '../../structures/UnavailableGuild';
+import { Guild } from '@structures/Guild';
+import { Message } from '@structures/Message';
+import { UnavailableGuild } from '@structures/UnavailableGuild';
 
 export enum Events {
   Ready = 'ready',

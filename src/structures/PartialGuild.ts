@@ -1,16 +1,78 @@
 import { APIPartialGuild, GuildFeature, GuildVerificationLevel } from 'discord-api-types/v10';
-import { Shard } from '../clients/Shard';
-import { Base } from './Base';
+import { Shard } from '@clients/Shard';
+import { Base } from '@structures/Base';
 
-export class BaseGuild extends Base {
+export class PartialGuild extends Base {
+  /**
+   * Guild name
+   *
+   * @type {string}
+   * @memberof BaseGuild
+   */
   name!: string;
+
+  /**
+   * Guild description
+   *
+   * @type {(string | null)}
+   * @memberof BaseGuild
+   */
   description!: string | null;
+
+  /**
+   * Splash hash
+   *
+   * @type {(string | null)}
+   * @memberof BaseGuild
+   */
   splash!: string | null;
+
+  /**
+   * Banner hash
+   *
+   * @type {(string | null)}
+   * @memberof BaseGuild
+   */
   banner!: string | null;
+
+  /**
+   * Verification level
+   *
+   * @type {GuildVerificationLevel}
+   * @memberof BaseGuild
+   */
   verificationLevel!: GuildVerificationLevel;
+
+  /**
+   * Icon hash
+   *
+   * @type {(string | null)}
+   * @memberof PartialGuild
+   */
   icon!: string | null;
+
+  /**
+   * Features guild has
+   *
+   * @type {GuildFeature[]}
+   * @memberof PartialGuild
+   */
   features!: GuildFeature[];
+
+  /**
+   * Vanity invite code
+   *
+   * @type {(string | null)}
+   * @memberof PartialGuild
+   */
   vanityCode!: string | null;
+
+  /**
+   * Shard number
+   *
+   * @type {number}
+   * @memberof PartialGuild
+   */
   shardId: number;
 
   constructor(shard: Shard, guild: APIPartialGuild) {

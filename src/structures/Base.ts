@@ -1,4 +1,5 @@
-import { Client } from '../clients/Client';
+import { Client } from '@clients/Client';
+import { flatten } from '@utils/Utils';
 
 export class Base {
   client: Client;
@@ -10,4 +11,9 @@ export class Base {
   }
 
   patch(_: unknown) {}
+
+  toJSON(...props: any) {
+    console.log(Object.keys(this));
+    return flatten(this, props);
+  }
 }

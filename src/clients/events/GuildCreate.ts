@@ -1,7 +1,7 @@
 import { GatewayGuildCreateDispatch } from 'discord-api-types/v10';
-import { Client } from '../Client';
-import { Shard } from '../Shard';
-import { Events } from '../../types/events/ClientEvents';
+import { Client } from '@clients/Client';
+import { Shard } from '@clients/Shard';
+import { Events } from '@typings/events/ClientEvents';
 
 export default function (client: Client, shard: Shard, packet: GatewayGuildCreateDispatch) {
   let guild = client.guilds.get(packet.d.id);

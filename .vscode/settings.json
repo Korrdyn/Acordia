@@ -2,6 +2,7 @@
   "cSpell.words": [
     "Acordia"
   ],
+  "discord.enabled": false,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,

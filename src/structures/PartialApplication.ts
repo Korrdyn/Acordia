@@ -1,6 +1,6 @@
 import { APIApplication, ApplicationFlags } from 'discord-api-types/v10';
-import { Client } from '../clients/Client';
-import { Base } from './Base';
+import { Client } from '@clients/Client';
+import { Base } from '@structures/Base';
 
 export class PartialApplication extends Base {
   flags: ApplicationFlags;

@@ -1,10 +1,23 @@
 import { APIPartialChannel, ChannelType } from 'discord-api-types/v10';
-import { Base } from './Base';
-import { Client } from '../clients/Client';
-import { GuildBasedChannel, TextBasedChannel } from '../types/ChannelTypes';
+import { Base } from '@structures/Base';
+import { Client } from '@clients/Client';
+import { GuildBasedChannel, TextBasedChannel } from '@typings/ChannelTypes';
 
 export class BaseChannel extends Base {
-  name!: string | null;
+  /**
+   * Channel name
+   *
+   * @type {string}
+   * @memberof BaseChannel
+   */
+  name!: string;
+
+  /**
+   * Type of channel
+   *
+   * @type {ChannelType}
+   * @memberof BaseChannel
+   */
   type!: ChannelType;
 
   constructor(client: Client, data: APIPartialChannel) {
@@ -12,7 +25,7 @@ export class BaseChannel extends Base {
   }
 
   override patch(data: APIPartialChannel) {
-    this.name = data.name ?? null;
+    this.name = data.name ?? '';
     this.type = data.type;
   }
 

@@ -24,7 +24,7 @@ export class GuildChannelManager extends Manager<GuildChannel> {
         default:
           channel = new GuildChannel(this.guild, data);
       }
-
+      channel.patch(data);
       this.set(channel.id, channel);
     }
 
