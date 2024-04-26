@@ -78,11 +78,11 @@ export class Message extends Base {
   constructor(channel: TextBasedChannel, data: GatewayMessageCreateDispatchData) {
     super(channel.client, data.id);
     this.channel = channel;
-    this.patch(data);
+    this._patch(data);
   }
 
-  override patch(data: GatewayMessageCreateDispatchData) {
-    this.author = this.client.users.add(data.author);
+  override _patch(data: GatewayMessageCreateDispatchData) {
+    this.author = this.client.users._add(data.author);
     this.content = data.content;
     this.timestamp = data.timestamp;
     this.editedTimestamp = data.edited_timestamp;
@@ -91,17 +91,17 @@ export class Message extends Base {
 
     this.mentions.clear();
     for (const mention of data.mentions) {
-      this.mentions.set(mention.id, this.client.users.add(mention));
+      this.mentions.set(mention.id, this.client.users._add(mention));
       if (mention.member && this.guild) {
         const member = mention.member as APIGuildMember;
         member.user = mention;
-        this.guild.members.add(member);
+        this.guild.members._add(member);
       }
     }
 
     if (data.member && this.guild) {
       data.member.user = data.author;
-      this.member = this.guild.members.add(data.member);
+      this.member = this.guild.members._add(data.member);
     }
 
     this.mentionedRoles = data.mention_roles;

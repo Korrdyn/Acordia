@@ -9,15 +9,15 @@ export default function (client: Client, shard: Shard, packet: GatewayGuildCreat
     const unavailable = client.guilds.unavailable.get(packet.d.id);
     if (!unavailable) {
       // ? New guild
-      guild = client.guilds.add(shard, packet.d);
+      guild = client.guilds._add(shard, packet.d);
       client.emit(Events.GuildCreate, guild);
     } else {
       // ? Available guild
       client.guilds.unavailable.delete(unavailable.id);
-      guild = client.guilds.add(shard, packet.d);
+      guild = client.guilds._add(shard, packet.d);
       client.emit(Events.GuildAvailable, guild);
     }
   } else {
-    guild.patch(packet.d);
+    guild._patch(packet.d);
   }
 }

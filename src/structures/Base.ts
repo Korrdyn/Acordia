@@ -1,19 +1,24 @@
 import { Client } from '@clients/Client';
 import { flatten } from '@utils/Utils';
+import { Snowflake } from 'discord-api-types/globals';
 
 export class Base {
   client: Client;
-  id: string;
+  id: Snowflake;
 
-  constructor(client: Client, id: string) {
+  constructor(client: Client, id: Snowflake) {
     this.client = client;
     this.id = id;
   }
 
-  patch(_: unknown) {}
+  /**
+   * @param {unknown} _
+   * @memberof Base
+   * @internal
+   */
+  _patch(_: unknown) {}
 
   toJSON(...props: any) {
-    console.log(Object.keys(this));
     return flatten(this, props);
   }
 }

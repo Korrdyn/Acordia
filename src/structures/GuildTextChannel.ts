@@ -41,8 +41,8 @@ export class GuildTextChannel extends GuildChannel {
     this.messages = new MessageManager(this);
   }
 
-  override patch(data: APIGuildTextChannel<ChannelType.GuildText>) {
-    super.patch(data);
+  override _patch(data: APIGuildTextChannel<ChannelType.GuildText>) {
+    super._patch(data);
     this.rateLimitPerUser = data.rate_limit_per_user ?? null;
     this.lastPinTimestamp = data.last_pin_timestamp ?? null;
     this.defaultAutoArchiveDuration = data.default_auto_archive_duration ?? null;

@@ -17,10 +17,10 @@ export class User extends Base {
   constructor(client: Client, data: APIUser) {
     super(client, data.id);
     this.client = client;
-    this.patch(data);
+    this._patch(data);
   }
 
-  override patch(data: APIUser) {
+  override _patch(data: APIUser) {
     this.id = data.id;
     this.username = data.username;
     this.discriminator = data.discriminator;

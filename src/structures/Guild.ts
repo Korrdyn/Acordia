@@ -55,11 +55,11 @@ export class Guild extends PartialGuild {
     this.members = new GuildMemberManager(this);
     this.roles = new GuildRoleManager(this);
     this.channels = new GuildChannelManager(this);
-    this.patch(data);
+    this._patch(data);
   }
 
-  override patch(guild: GatewayGuildCreateDispatchData | APIGuild) {
-    super.patch(guild);
+  override _patch(guild: GatewayGuildCreateDispatchData | APIGuild) {
+    super._patch(guild);
     this.ownerId = guild.owner_id;
     this.discoverySplash = guild.discovery_splash;
     this.afkChannelId = guild.afk_channel_id;
@@ -86,16 +86,16 @@ export class Guild extends PartialGuild {
     this.hubType = guild.hub_type ?? null;
     this.safetyAlertChannelId = guild.safety_alerts_channel_id;
 
-    for (const role of guild.roles) this.roles.add(role);
+    for (const role of guild.roles) this.roles._add(role);
 
     if ('channels' in guild) {
       // data is GatewayGuildCreateDispatchData
 
       this.membersCount = guild.member_count;
 
-      for (const member of guild.members) this.members.add(member);
+      for (const member of guild.members) this.members._add(member);
 
-      for (const channel of guild.channels) this.channels.add(channel as APIGuildChannelType);
+      for (const channel of guild.channels) this.channels._add(channel as APIGuildChannelType);
     }
   }
 

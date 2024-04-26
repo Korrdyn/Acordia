@@ -24,7 +24,7 @@ export class BaseChannel extends Base {
     super(client, data.id);
   }
 
-  override patch(data: APIPartialChannel) {
+  override _patch(data: APIPartialChannel) {
     this.name = data.name ?? '';
     this.type = data.type;
   }

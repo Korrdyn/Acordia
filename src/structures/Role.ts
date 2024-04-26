@@ -103,10 +103,10 @@ export class Role extends Base {
   constructor(guild: Guild, data: APIRole) {
     super(guild.client, data.id);
     this.guild = guild;
-    this.patch(data);
+    this._patch(data);
   }
 
-  override patch(data: APIRole) {
+  override _patch(data: APIRole) {
     this.name = data.name;
     this.color = data.color;
     this.hoist = data.hoist;

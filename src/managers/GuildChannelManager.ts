@@ -1,8 +1,10 @@
 import { ChannelType } from 'discord-api-types/v10';
-import { Guild } from '../structures/Guild';
-import { APIGuildChannelType, GuildChannel } from '../structures/GuildChannel';
-import { Manager } from './Manager';
-import { GuildTextChannel } from '../structures/GuildTextChannel';
+import { APIGuildChannelType, GuildChannel } from '@structures/GuildChannel';
+import { GuildTextChannel } from '@structures/GuildTextChannel';
+import { Manager } from '@managers/Manager';
+import { Guild } from '@structures/Guild';
+import { GuildVoiceTextChannel } from '@structures/GuildVoiceTextChannel';
+import { GuildStageChannel } from '@structures/GuildStageChannel';
 
 export class GuildChannelManager extends Manager<GuildChannel> {
   guild: Guild;
@@ -12,19 +14,33 @@ export class GuildChannelManager extends Manager<GuildChannel> {
     this.guild = guild;
   }
 
-  add(data: APIGuildChannelType) {
+  /**
+   * Add/update channel from payload
+   *
+   * @param {APIGuildChannelType} data
+   * @return {*}  {GuildChannel}
+   * @memberof GuildChannelManager
+   * @internal
+   */
+  _add(data: APIGuildChannelType): GuildChannel {
     let channel = this.get(data.id);
     if (channel) {
-      channel.patch(data);
+      channel._patch(data);
     } else {
       switch (data.type) {
         case ChannelType.GuildText:
           channel = new GuildTextChannel(this.guild, data);
           break;
+        case ChannelType.GuildStageVoice:
+          channel = new GuildStageChannel(this.guild, data);
+          break;
+        case ChannelType.GuildVoice:
+          channel = new GuildVoiceTextChannel(this.guild, data);
+          break;
         default:
           channel = new GuildChannel(this.guild, data);
       }
-      channel.patch(data);
+      channel._patch(data);
       this.set(channel.id, channel);
     }
 

@@ -10,7 +10,7 @@ export default function (client: Client, _: Shard, packet: GatewayMessageCreateD
     if (!guild) return;
     const channel = guild.channels.get(data.channel_id);
     if (!channel?.isTextBased()) return;
-    const message = channel.messages.add(data);
+    const message = channel.messages._add(data);
     client.emit(Events.MessageCreate, message);
   } else {
     // TODO: Handle DMs

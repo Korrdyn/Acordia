@@ -3,7 +3,7 @@ import { Client } from '@clients/Client';
 
 // https://github.com/discordjs/discord.js/blob/main/packages/discord.js/src/util/Util.js#L17
 const isObject = (d: Record<any, any> | null) => typeof d === 'object' && d !== null;
-export function flatten(obj: any, ...props: any[]) {
+export function flatten(obj: any, props?: { [key: string]: any }) {
   if (!isObject(obj)) return obj;
 
   const objProps = Object.keys(obj)
@@ -15,7 +15,7 @@ export function flatten(obj: any, ...props: any[]) {
 
   const out: Record<string, any> = {};
 
-  for (let [prop, newProp] of Object.entries(props)) {
+  for (let [prop, newProp] of Object.entries(props!)) {
     if (!newProp) continue;
     newProp = newProp === true ? prop : newProp;
 

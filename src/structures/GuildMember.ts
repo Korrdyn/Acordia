@@ -104,12 +104,12 @@ export class GuildMember extends Base {
   constructor(guild: Guild, data: APIGuildMember) {
     super(guild.client, data.user!.id);
     this.guild = guild;
-    this.user = guild.client.users.add(data.user!);
+    this.user = guild.client.users._add(data.user!);
     this.roles = new GuildMemberRoleManager(this);
-    this.patch(data);
+    this._patch(data);
   }
 
-  override patch(data: APIGuildMember) {
+  override _patch(data: APIGuildMember) {
     this.nick = data.nick ?? null;
     this.avatar = data.avatar ?? null;
     for (const role of data.roles) this.roles.set(role, this.guild.roles.get(role)!);

@@ -1,6 +1,6 @@
-import { GuildMember } from '../structures/GuildMember';
-import { Role } from '../structures/Role';
-import { Manager } from './Manager';
+import { Manager } from "@managers/Manager";
+import { GuildMember } from "@structures/GuildMember";
+import { Role } from "@structures/Role";
 
 export class GuildMemberRoleManager extends Manager<Role> {
   member: GuildMember;
