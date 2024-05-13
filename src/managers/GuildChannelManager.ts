@@ -5,6 +5,10 @@ import { Manager } from '@managers/Manager';
 import { Guild } from '@structures/Guild';
 import { GuildVoiceTextChannel } from '@structures/GuildVoiceTextChannel';
 import { GuildStageChannel } from '@structures/GuildStageChannel';
+import { GuildNewsChannel } from '@structures/GuildNewsChannel';
+import { GuildForumChannel } from '@structures/GuildForumChannel';
+import { GuildCategoryChannel } from '@structures/GuildCategoryChannel';
+import { GuildStoreChannel } from '@structures/GuildStoreChannel';
 
 export class GuildChannelManager extends Manager<GuildChannel> {
   guild: Guild;
@@ -36,6 +40,18 @@ export class GuildChannelManager extends Manager<GuildChannel> {
           break;
         case ChannelType.GuildVoice:
           channel = new GuildVoiceTextChannel(this.guild, data);
+          break;
+        case ChannelType.GuildAnnouncement:
+          channel = new GuildNewsChannel(this.guild, data);
+          break;
+        case ChannelType.GuildForum:
+          channel = new GuildForumChannel(this.guild, data);
+          break;
+        case ChannelType.GuildCategory:
+          channel = new GuildCategoryChannel(this.guild, data);
+          break;
+        case ChannelType.GuildMedia:
+          channel = new GuildStoreChannel(this.guild, data);
           break;
         default:
           channel = new GuildChannel(this.guild, data);

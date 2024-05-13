@@ -3,6 +3,18 @@ import { GuildVoiceChannel } from '@structures/GuildVoiceChannel';
 import { RESTPostAPIStageInstanceJSONBody, RESTPostAPIStageInstanceResult, Routes, Snowflake, StageInstancePrivacyLevel } from 'discord-api-types/v10';
 
 export class GuildStageChannel extends GuildVoiceChannel {
+  
+  /**
+   * Create a stage instance
+   * @param {Object} options
+   * @param {string} options.topic - The topic of the instance. 1-120 characters
+   * @param {StageInstancePrivacyLevel} [options.privacyLevel] - The privacy of the instance.
+   * @param {boolean} [options.sendNotification] - Should a notification be sent to everyone
+   * @param {Snowflake} [options.eventId] - Id of scheduled guild event
+   * @param {string} [options.reason] - Reason for creating instance
+   * @return {*}  {Promise<GuildStageInstance>}
+   * @memberof GuildStageChannel
+   */
   async createInstance({
     topic,
     privacyLevel,

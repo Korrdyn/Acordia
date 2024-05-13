@@ -2,6 +2,7 @@ import { GatewayDispatchPayload } from 'discord-api-types/v10';
 import { Guild } from '@structures/Guild';
 import { Message } from '@structures/Message';
 import { UnavailableGuild } from '@structures/UnavailableGuild';
+import { BaseChannel } from '@structures/BaseChannel';
 
 export enum Events {
   Ready = 'ready',
@@ -15,6 +16,9 @@ export enum Events {
   GuildDelete = 'guildDelete',
   GuildAvailable = 'guildAvailable',
   MessageCreate = 'messageCreate',
+  ChannelCreate = 'channelCreate',
+  ChannelUpdate = 'channelUpdate',
+  ChannelDelete = 'channelDelete',
 }
 
 export interface IEvents {
@@ -37,4 +41,8 @@ export interface IEvents {
   guildDelete: (guild: Guild | UnavailableGuild) => any;
   guildAvailable: (guild: Guild) => any;
   messageCreate: (message: Message) => any;
+  channelCreate: (channel: BaseChannel) => any;
+  // TODO: Make better type for old channel
+  channelUpdate: (channel: BaseChannel, oldChannel: Record<string, unknown>) => any;
+  channelDelete: (channel: BaseChannel) => any;
 }

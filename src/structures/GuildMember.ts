@@ -109,6 +109,9 @@ export class GuildMember extends Base {
     this._patch(data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: APIGuildMember) {
     this.nick = data.nick ?? null;
     this.avatar = data.avatar ?? null;

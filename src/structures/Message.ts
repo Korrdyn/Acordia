@@ -81,6 +81,9 @@ export class Message extends Base {
     this._patch(data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: GatewayMessageCreateDispatchData) {
     this.author = this.client.users._add(data.author);
     this.content = data.content;

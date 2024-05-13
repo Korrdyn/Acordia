@@ -3,6 +3,7 @@ import {
   APIGuild,
   APIGuildWelcomeScreen,
   APISticker,
+  APIThreadChannel,
   GatewayGuildCreateDispatchData,
   GuildDefaultMessageNotifications,
   GuildExplicitContentFilter,
@@ -18,6 +19,7 @@ import { GuildMemberManager } from '@managers/GuildMemberManager';
 import { GuildRoleManager } from '@managers/GuildRoleManager';
 import { GuildChannelManager } from '@managers/GuildChannelManager';
 import { APIGuildChannelType } from '@structures/GuildChannel';
+import { GuildThreadManager } from '@managers/GuildThreadManager';
 
 export class Guild extends PartialGuild {
   ownerId!: string;
@@ -49,15 +51,20 @@ export class Guild extends PartialGuild {
   membersCount!: number;
   roles: GuildRoleManager;
   channels: GuildChannelManager;
+  threads: GuildThreadManager;
 
   constructor(shard: Shard, data: GatewayGuildCreateDispatchData) {
     super(shard, data);
     this.members = new GuildMemberManager(this);
     this.roles = new GuildRoleManager(this);
     this.channels = new GuildChannelManager(this);
+    this.threads = new GuildThreadManager(this);
     this._patch(data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(guild: GatewayGuildCreateDispatchData | APIGuild) {
     super._patch(guild);
     this.ownerId = guild.owner_id;
@@ -97,6 +104,8 @@ export class Guild extends PartialGuild {
 
       for (const channel of guild.channels) this.channels._add(channel as APIGuildChannelType);
     }
+
+    if ('threads' in guild) for (const thread of guild.threads) this.threads._add(thread as APIThreadChannel);
   }
 
   get self() {

@@ -1,6 +1,5 @@
-import { APIGuildTextChannel, ChannelType } from 'discord-api-types/v10';
 import { Guild } from '@structures/Guild';
-import { GuildChannel } from '@structures/GuildChannel';
+import { APIGuildChannelType, GuildChannel } from '@structures/GuildChannel';
 import { MessageManager } from '@managers/MessageManager';
 
 export class GuildTextChannel extends GuildChannel {
@@ -18,7 +17,7 @@ export class GuildTextChannel extends GuildChannel {
    * @type {(number | null)}
    * @memberof GuildTextChannel
    */
-  rateLimitPerUser!: number | null;
+  rateLimitPerUser: number | null = null;
 
   /**
    * Last pinned timestamp
@@ -26,7 +25,7 @@ export class GuildTextChannel extends GuildChannel {
    * @type {(string | null)}
    * @memberof GuildTextChannel
    */
-  lastPinTimestamp!: string | null;
+  lastPinTimestamp: string | null = null;
 
   /**
    * Default auto archive duration for threads
@@ -34,17 +33,20 @@ export class GuildTextChannel extends GuildChannel {
    * @type {(number | null)}
    * @memberof GuildTextChannel
    */
-  defaultAutoArchiveDuration!: number | null;
+  defaultAutoArchiveDuration: number | null = null;
 
-  constructor(guild: Guild, data: APIGuildTextChannel<ChannelType.GuildText>) {
+  constructor(guild: Guild, data: APIGuildChannelType) {
     super(guild, data);
     this.messages = new MessageManager(this);
   }
 
-  override _patch(data: APIGuildTextChannel<ChannelType.GuildText>) {
+  /**
+   * @internal
+   */
+  override _patch(data: APIGuildChannelType) {
     super._patch(data);
-    this.rateLimitPerUser = data.rate_limit_per_user ?? null;
-    this.lastPinTimestamp = data.last_pin_timestamp ?? null;
-    this.defaultAutoArchiveDuration = data.default_auto_archive_duration ?? null;
+    if ('rate_limit_per_user' in data) this.rateLimitPerUser = data.rate_limit_per_user ?? null;
+    if ('last_pin_timestamp' in data) this.lastPinTimestamp = data.last_pin_timestamp ?? null;
+    if ('default_auto_archive_duration' in data) this.defaultAutoArchiveDuration = data.default_auto_archive_duration ?? null;
   }
 }

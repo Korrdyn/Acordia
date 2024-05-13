@@ -33,6 +33,9 @@ export class GuildVoiceTextChannel extends GuildVoiceChannel {
     this.messages = new MessageManager(this);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: APIGuildVoiceChannel): void {
     super._patch(data);
     if (data.rate_limit_per_user !== undefined) this.rateLimitPerUser = data.rate_limit_per_user;

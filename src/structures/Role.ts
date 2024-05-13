@@ -1,4 +1,4 @@
-import { APIRole, APIRoleTags, RoleFlags } from 'discord-api-types/v10';
+import { APIRole, APIRoleTags, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RoleFlags, Routes } from 'discord-api-types/v10';
 import { Base } from '@structures/Base';
 import { Guild } from '@structures/Guild';
 import { PermissionBitfield } from '@utils/PermissionBitfield';
@@ -106,6 +106,9 @@ export class Role extends Base {
     this._patch(data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: APIRole) {
     this.name = data.name;
     this.color = data.color;
@@ -118,5 +121,55 @@ export class Role extends Base {
     this.mentionable = data.mentionable;
     this.tags = data.tags ?? null;
     this.flags = data.flags;
+  }
+
+  /**
+   * Edit role
+   *
+   * @param {Object} options
+   * @param {(string | null)} [options.name] - Name of the role
+   * @param {(PermissionBitfield | string | null)} [options.permissions] - Bitwise value of permissions
+   * @param {(number | null)} [options.color] - Decimal RGB color
+   * @param {(boolean | null)} [options.hoist] - Should the role be hoisted
+   * @param {(string | null)} [options.icon] - Data URI {@link https://discord.com/developers/docs/reference#image-data}
+   * @param {(string | null)} [options.emoji] - Unicode emoji
+   * @param {(boolean | null)} [options.mentionable] - Should the role mentionable
+   * @param {string} [options.reason] - Reason for editing role
+   * @return {*}  {Promise<Role>}
+   * @memberof Role
+   */
+  async edit({
+    name,
+    permissions,
+    color,
+    hoist,
+    icon,
+    emoji,
+    mentionable,
+    reason,
+  }: {
+    name?: string | null;
+    permissions?: PermissionBitfield | string | null;
+    color?: number | null;
+    hoist?: boolean | null;
+    icon?: string | null;
+    emoji?: string | null;
+    mentionable?: boolean | null;
+    reason?: string;
+  }): Promise<Role> {
+    const response = (await this.client.rest.patch(Routes.guildRole(this.guild.id, this.id), {
+      body: {
+        name,
+        permissions: permissions instanceof PermissionBitfield ? permissions.bits.toString() : permissions,
+        color,
+        hoist,
+        icon,
+        unicode_emoji: emoji,
+        mentionable,
+      } as RESTPatchAPIGuildRoleJSONBody,
+      reason,
+    })) as RESTPatchAPIGuildRoleResult;
+    this._patch(response);
+    return this;
   }
 }

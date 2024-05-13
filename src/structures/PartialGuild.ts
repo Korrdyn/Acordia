@@ -80,6 +80,9 @@ export class PartialGuild extends Base {
     this.shardId = shard.id;
   }
 
+  /**
+   * @internal
+   */
   override _patch(guild: APIPartialGuild) {
     this.id = guild.id;
     this.name = guild.name;

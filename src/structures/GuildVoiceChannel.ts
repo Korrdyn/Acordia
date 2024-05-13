@@ -47,6 +47,9 @@ export class GuildVoiceChannel extends GuildChannel {
     super(guild, data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: APIGuildVoiceChannel | APIGuildStageVoiceChannel): void {
     super._patch(data);
     if (data.bitrate) this.bitrate = data.bitrate;

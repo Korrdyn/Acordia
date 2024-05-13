@@ -18,7 +18,7 @@ export class Base {
    */
   _patch(_: unknown) {}
 
-  toJSON(...props: any) {
+  toJSON(props?: { [key: string]: boolean }) {
     return flatten(this, props);
   }
 }

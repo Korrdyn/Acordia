@@ -20,6 +20,9 @@ export class User extends Base {
     this._patch(data);
   }
 
+  /**
+   * @internal
+   */
   override _patch(data: APIUser) {
     this.id = data.id;
     this.username = data.username;

@@ -21,4 +21,8 @@ export class PermissionOverwrite extends Base {
   has(bit: BitType<Flags>) {
     return this.allow.has(bit);
   }
+
+  override toJSON(props?: Record<string, boolean>) {
+    return super.toJSON({ client: false, ...props });
+  }
 }

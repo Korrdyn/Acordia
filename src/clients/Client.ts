@@ -9,6 +9,7 @@ import { GuildManager } from '@managers/GuildManager';
 import { UserManager } from '@managers/UserManager';
 import { PartialApplication } from '@structures/PartialApplication';
 import { IClientOptionDefaults, Options } from '@utils/Options';
+import { flatten } from '@utils/Utils';
 
 export class Client extends EventEmitter<IEvents> {
   readonly options: IClientOptionDefaults;
@@ -52,5 +53,9 @@ export class Client extends EventEmitter<IEvents> {
 
   async disconnect() {
     await this.shards.destroy();
+  }
+
+  toJSON(props?: Record<string, string | boolean>) {
+    return flatten(this, { guilds: false, ...props });
   }
 }

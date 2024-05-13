@@ -41,6 +41,15 @@ export class GuildStageInstance extends Base {
     return this.client.rest.delete(Routes.stageInstance(this.channel.id), { reason }) as Promise<never>;
   }
 
+  /**
+   *
+   * @param {Object} options
+   * @param {string} [options.topic] - The topic of this instance
+   * @param {StageInstancePrivacyLevel} [options.privacyLevel] - The privacy level of this instance
+   * @param {string} [options.reason] - Reason for modification
+   * @return {*}  {Promise<GuildStageInstance>}
+   * @memberof GuildStageInstance
+   */
   async modify({ topic, privacyLevel, reason }: { topic?: string; privacyLevel?: StageInstancePrivacyLevel; reason?: string }): Promise<GuildStageInstance> {
     if (topic === undefined && privacyLevel === undefined) throw new AcordiaError('Topic or privacy level must be provided');
 
