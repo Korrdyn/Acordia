@@ -107,8 +107,4 @@ export class Guild extends PartialGuild {
 
     if ('threads' in guild) for (const thread of guild.threads) this.threads._add(thread as APIThreadChannel);
   }
-
-  get self() {
-    return this.members.get(this.client.application.id)!;
-  }
 }

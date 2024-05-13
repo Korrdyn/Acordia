@@ -37,6 +37,6 @@ export class BaseChannel extends Base {
   }
 
   inGuild(): this is GuildBasedChannel {
-    return 'guild' in this;
+    return 'guild' in this && !!this.guild;
   }
 }

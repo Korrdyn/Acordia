@@ -28,4 +28,8 @@ export class GuildMemberManager extends Manager<GuildMember> {
     }
     return member;
   }
+
+  get self() {
+    return this.get(this.client.application.id)!;
+  }
 }

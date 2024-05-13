@@ -134,6 +134,6 @@ export class Message extends Base {
   }
 
   get guild(): Guild | null {
-    return this.channel.guild ?? null;
+    return 'guild' in this.channel ? this.channel.guild : null;
   }
 }

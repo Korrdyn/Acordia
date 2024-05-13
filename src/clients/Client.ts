@@ -10,6 +10,7 @@ import { UserManager } from '@managers/UserManager';
 import { PartialApplication } from '@structures/PartialApplication';
 import { IClientOptionDefaults, Options } from '@utils/Options';
 import { flatten } from '@utils/Utils';
+import { DMChannelManager } from '@managers/DMChannelManager';
 
 export class Client extends EventEmitter<IEvents> {
   readonly options: IClientOptionDefaults;
@@ -19,6 +20,7 @@ export class Client extends EventEmitter<IEvents> {
   guilds: GuildManager;
   users: UserManager;
   application!: PartialApplication;
+  dmChannels: DMChannelManager;
 
   constructor(options: IClientOptions) {
     super();
@@ -33,6 +35,7 @@ export class Client extends EventEmitter<IEvents> {
 
     this.guilds = new GuildManager(this);
     this.users = new UserManager(this);
+    this.dmChannels = new DMChannelManager(this);
 
     this.shards = new ShardManager(this);
   }

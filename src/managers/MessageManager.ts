@@ -1,10 +1,11 @@
-import { APIMessage } from 'discord-api-types/v10';
+import { APIMessage, Snowflake } from 'discord-api-types/v10';
 import { TextBasedChannel } from '@typings/ChannelTypes';
 import { Manager } from '@managers/Manager';
 import { Message } from '@structures/Message';
 
 export class MessageManager extends Manager<Message> {
   channel: TextBasedChannel;
+  lastId: Snowflake | null = null;
 
   constructor(channel: TextBasedChannel) {
     super(channel.client);
@@ -28,6 +29,7 @@ export class MessageManager extends Manager<Message> {
       this.set(message.id, message);
     }
     this.prune();
+    if (!this.lastId || BigInt(this.lastId) < BigInt(data.id)) this.lastId = data.id;
     return message;
   }
 
