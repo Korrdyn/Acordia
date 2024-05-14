@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { IEvents } from '../typings/events/ClientEvents';
+import { Events, IEvents } from '@typings/events/ClientEvents';
 import { IClientOptions } from '@typings/ClientOptions';
 import { REST } from '@discordjs/rest';
 import pkg from '../../package.json';
@@ -17,10 +17,10 @@ export class Client extends EventEmitter<IEvents> {
   readonly rest: REST;
   readonly shards: ShardManager;
   readyTimestamp?: number;
-  guilds: GuildManager;
-  users: UserManager;
+  readonly guilds: GuildManager;
+  readonly users: UserManager;
   application!: PartialApplication;
-  dmChannels: DMChannelManager;
+  readonly dmChannels: DMChannelManager;
 
   constructor(options: IClientOptions) {
     super();
@@ -56,6 +56,12 @@ export class Client extends EventEmitter<IEvents> {
 
   async disconnect() {
     await this.shards.destroy();
+  }
+
+  override emit<T extends keyof IEvents>(event: T, ...args: EventEmitter.ArgumentMap<IEvents>[Extract<T, keyof IEvents>]): boolean {
+    const result = super.emit(event, ...args);
+    super.emit(Events.Event, event, ...args);
+    return result;
   }
 
   toJSON(props?: Record<string, string | boolean>) {

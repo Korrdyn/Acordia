@@ -1,7 +1,7 @@
 import { Client } from '@clients/Client';
 import { Shard } from '@clients/Shard';
 import { Events } from '@typings/events/ClientEvents';
-import { GatewayChannelCreateDispatch, GatewayDispatchEvents } from 'discord-api-types/v10';
+import { APIDMChannel, GatewayChannelCreateDispatch, GatewayDispatchEvents } from 'discord-api-types/v10';
 
 export default function (client: Client, shard: Shard, packet: GatewayChannelCreateDispatch) {
   if ('guild_id' in packet.d) {
@@ -16,7 +16,8 @@ export default function (client: Client, shard: Shard, packet: GatewayChannelCre
       const channel = guild.channels._add(packet.d);
       client.emit(Events.ChannelUpdate, channel, old);
     }
-  } else {
-    // TODO: Handle DM channels
+  } else if (packet.t === GatewayDispatchEvents.ChannelCreate) {
+    const channel = client.dmChannels._add(packet.d as APIDMChannel);
+    client.emit(Events.ChannelCreate, channel);
   }
 }

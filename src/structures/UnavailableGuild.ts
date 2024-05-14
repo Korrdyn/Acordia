@@ -1,12 +1,14 @@
 import { APIUnavailableGuild } from 'discord-api-types/v10';
-import { Client } from '@clients/Client';
 import { Base } from '@structures/Base';
+import { Shard } from '@clients/Shard';
 
 export class UnavailableGuild extends Base {
   unavailable: boolean;
+  shard: Shard;
 
-  constructor(client: Client, data: APIUnavailableGuild) {
-    super(client, data.id);
+  constructor(shard: Shard, data: APIUnavailableGuild) {
+    super(shard.client, data.id);
     this.unavailable = data.unavailable;
+    this.shard = shard;
   }
 }

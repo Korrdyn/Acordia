@@ -12,6 +12,8 @@ export default function (client: Client, shard: Shard, packet: GatewayChannelDel
     guild.channels.delete(channel.id);
     client.emit(Events.ChannelDelete, channel);
   } else {
-    // TODO: Handle DM channels
+    const channel = client.dmChannels.get(packet.d.id)!;
+    client.dmChannels.delete(packet.d.id);
+    client.emit(Events.ChannelDelete, channel);
   }
 }

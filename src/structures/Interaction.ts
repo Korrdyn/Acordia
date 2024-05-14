@@ -1,11 +1,22 @@
 import { Client } from '@clients/Client';
 import { RawFile } from '@discordjs/rest';
+import { AutocompleteInteraction } from '@structures/AutocompleteInteraction';
 import { Base } from '@structures/Base';
 import { CommandInteraction } from '@structures/CommandInteraction';
+import { ComponentInteraction } from '@structures/ComponentInteraction';
 import { Guild } from '@structures/Guild';
+import { APIGuildChannelType } from '@structures/GuildChannel';
+import { GuildMember } from '@structures/GuildMember';
+import { GuildTextChannel } from '@structures/GuildTextChannel';
+import { ModalSubmitInteraction } from '@structures/ModalSubmitInteraction';
+import { PingInteraction } from '@structures/PingInteraction';
+import { User } from '@structures/User';
+import { TextBasedChannel } from '@typings/ChannelTypes';
 import { AcordiaError } from '@utils/AcordiaError';
+import { PermissionBitfield } from '@utils/PermissionBitfield';
 import {
   APIAllowedMentions,
+  APIDMChannel,
   APIEmbed,
   APIEntitlement,
   APIInteraction,
@@ -22,6 +33,8 @@ import {
   Snowflake,
 } from 'discord-api-types/v10';
 
+export type GuildInteraction = Interaction & { guild: Guild; member: GuildMember };
+
 export class Interaction extends Base {
   applicationId: Snowflake;
   token: string;
@@ -30,6 +43,10 @@ export class Interaction extends Base {
   acknowledged = false;
   entitlements: APIEntitlement[];
   guild: Guild | null;
+  channel: TextBasedChannel | null = null;
+  member: GuildMember | null = null;
+  user: User | null = null;
+  permissions: PermissionBitfield | null = null;
 
   constructor(client: Client, data: APIInteraction) {
     super(client, data.id);
@@ -39,6 +56,23 @@ export class Interaction extends Base {
     this.version = data.version;
     this.entitlements = data.entitlements;
     this.guild = data.guild_id ? client.guilds.get(data.guild_id) ?? null : null;
+    if (data.channel)
+      this.channel = data.guild_id
+        ? (this.guild?.channels._add(data.channel as APIGuildChannelType) as GuildTextChannel) ?? null
+        : client.dmChannels._add(data.channel as APIDMChannel) ?? null;
+    if (data.member !== undefined) {
+      if (this.guild) {
+        this.member = this.guild.members._add(data.member);
+        this.user = this.client.users._add(data.member.user);
+      }
+    }
+
+    if ('user' in data && data.user !== undefined) {
+      this.user = this.client.users._add(data.user);
+    }
+    if (data.app_permissions !== undefined) {
+      this.permissions = new PermissionBitfield(data.app_permissions);
+    }
   }
 
   /**
@@ -48,7 +82,7 @@ export class Interaction extends Base {
     this.acknowledged = true;
   }
 
-  inGuild() {
+  inGuild(): this is GuildInteraction {
     return this.guild !== null;
   }
 
@@ -56,7 +90,21 @@ export class Interaction extends Base {
     return this.type === InteractionType.ApplicationCommand;
   }
 
-  // TODO: Add type check functions
+  isAutocomplete(): this is AutocompleteInteraction {
+    return this.type === InteractionType.ApplicationCommandAutocomplete;
+  }
+
+  isComponent(): this is ComponentInteraction {
+    return this.type === InteractionType.MessageComponent;
+  }
+
+  isModal(): this is ModalSubmitInteraction {
+    return this.type === InteractionType.ModalSubmit;
+  }
+
+  isPing(): this is PingInteraction {
+    return this.type === InteractionType.Ping;
+  }
 
   /**
    * Respond to the interaction with a message saying premium is required
@@ -216,7 +264,10 @@ export class Interaction extends Base {
     return response;
   }
 
-  private async respond<T = unknown>(content: RESTPostAPIInteractionCallbackFormDataBody, files?: RawFile[]): Promise<T> {
+  /**
+   * @internal
+   */
+  async respond<T = unknown>(content: RESTPostAPIInteractionCallbackFormDataBody, files?: RawFile[]): Promise<T> {
     if (this.acknowledged) throw new AcordiaError('This interaction has already been acknowledged');
     const response = await this.client.rest.post(Routes.interactionCallback(this.id, this.token), { body: content, files });
     this.update();

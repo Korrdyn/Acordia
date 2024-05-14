@@ -2,7 +2,6 @@ import { Client } from '@clients/Client';
 import { Collection } from '@discordjs/collection';
 import { APIGuildChannelType } from '@structures/GuildChannel';
 import { GuildMember } from '@structures/GuildMember';
-import { GuildTextChannel } from '@structures/GuildTextChannel';
 import { Interaction } from '@structures/Interaction';
 import { User } from '@structures/User';
 import { TextBasedChannel } from '@typings/ChannelTypes';
@@ -25,12 +24,8 @@ import {
   ApplicationCommandType,
   ChannelType,
 } from 'discord-api-types/v10';
-import { PermissionBitfield } from '@utils/PermissionBitfield';
 
 export class CommandInteraction<T extends APIApplicationCommandInteraction = APIApplicationCommandInteraction> extends Interaction {
-  channel: TextBasedChannel;
-  member: GuildMember | null = null;
-  user!: User;
   data: T['data'];
   command: string;
   group: string | null = null;
@@ -41,16 +36,9 @@ export class CommandInteraction<T extends APIApplicationCommandInteraction = API
   roles = new Collection<string, Role>();
   channels = new Collection<string, BaseChannel>();
   messages = new Collection<string, Message>();
-  permissions: PermissionBitfield | null = null;
 
   constructor(client: Client, data: APIApplicationCommandGuildInteraction | APIApplicationCommandInteraction) {
     super(client, data);
-
-    if (this.guild) {
-      this.channel = this.guild.channels._add(data.channel as APIGuildChannelType) as GuildTextChannel;
-    } else {
-      this.channel = client.dmChannels._add(data.channel as APIDMChannel);
-    }
 
     this.data = JSON.parse(JSON.stringify(data.data));
     this.command = this.data.name;
@@ -106,21 +94,6 @@ export class CommandInteraction<T extends APIApplicationCommandInteraction = API
           this.messages.set(id, new Message(channel as unknown as TextBasedChannel, data as unknown as APIMessage));
         });
       }
-    }
-
-    if (data.member !== undefined) {
-      if (this.guild) {
-        this.member = this.guild.members._add(data.member);
-        this.user = this.client.users._add(data.member.user);
-      }
-    }
-
-    if ('user' in data && data.user !== undefined) {
-      this.user = this.client.users._add(data.user);
-    }
-
-    if (data.app_permissions !== undefined) {
-      this.permissions = new PermissionBitfield(data.app_permissions);
     }
   }
 

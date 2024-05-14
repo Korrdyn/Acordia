@@ -1,6 +1,6 @@
 import { GatewayPresenceUpdateData } from 'discord-api-types/v10';
 import { IClientOptions } from '@typings/ClientOptions';
-import { GatewayIntentBitfield } from './GatewayIntentsBitfield';
+import { GatewayIntentBitfield } from './GatewayIntentBitfield';
 
 export interface IClientOptionDefaults {
   token: string;

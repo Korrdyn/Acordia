@@ -2,6 +2,7 @@ import { APIPartialChannel, ChannelType } from 'discord-api-types/v10';
 import { Base } from '@structures/Base';
 import { Client } from '@clients/Client';
 import { GuildBasedChannel, TextBasedChannel } from '@typings/ChannelTypes';
+import { DMChannel } from '@structures/DMChannel';
 
 export class BaseChannel extends Base {
   /**
@@ -38,5 +39,9 @@ export class BaseChannel extends Base {
 
   inGuild(): this is GuildBasedChannel {
     return 'guild' in this && !!this.guild;
+  }
+
+  isDM(): this is DMChannel {
+    return this.type === ChannelType.DM;
   }
 }

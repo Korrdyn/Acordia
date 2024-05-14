@@ -124,4 +124,8 @@ export class GuildMember extends Base {
     this.pending = data.pending ?? false;
     this.communicationDisabledUntil = data.communication_disabled_until ?? null;
   }
+
+  get permissions() {
+    return this.guild.permissionsOf(this);
+  }
 }

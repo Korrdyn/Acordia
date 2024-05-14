@@ -3,8 +3,10 @@ import { Guild } from '@structures/Guild';
 import { Message } from '@structures/Message';
 import { UnavailableGuild } from '@structures/UnavailableGuild';
 import { BaseChannel } from '@structures/BaseChannel';
+import { Interaction } from '@structures/Interaction';
+import { CommandErrorData } from '@clients/structures/CommandError';
 
-export enum Events {
+export const enum Events {
   Ready = 'ready',
   ShardReady = 'shardReady',
   Debug = 'debug',
@@ -19,6 +21,11 @@ export enum Events {
   ChannelCreate = 'channelCreate',
   ChannelUpdate = 'channelUpdate',
   ChannelDelete = 'channelDelete',
+  InteractionCreate = 'interactionCreate',
+  CommandError = 'commandError',
+  CommandExecuted = 'commandExecuted',
+  Error = 'error',
+  Event = 'event',
 }
 
 export interface IEvents {
@@ -45,4 +52,9 @@ export interface IEvents {
   // TODO: Make better type for old channel
   channelUpdate: (channel: BaseChannel, oldChannel: Record<string, unknown>) => any;
   channelDelete: (channel: BaseChannel) => any;
+  interactionCreate: (interaction: Interaction) => any;
+  commandError: (command: string, interaction: Interaction, data: CommandErrorData) => any;
+  commandExecuted: (command: string, interaction: Interaction) => any;
+  error: (error: Error | string, shard?: number) => any;
+  event: (event: `${Events}`, ...args: any[]) => any;
 }

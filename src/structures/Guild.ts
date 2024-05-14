@@ -12,6 +12,7 @@ import {
   GuildNSFWLevel,
   GuildPremiumTier,
   GuildSystemChannelFlags,
+  Snowflake,
 } from 'discord-api-types/v10';
 import { Shard } from '@clients/Shard';
 import { PartialGuild } from '@structures/PartialGuild';
@@ -20,6 +21,8 @@ import { GuildRoleManager } from '@managers/GuildRoleManager';
 import { GuildChannelManager } from '@managers/GuildChannelManager';
 import { APIGuildChannelType } from '@structures/GuildChannel';
 import { GuildThreadManager } from '@managers/GuildThreadManager';
+import { GuildMember } from '@structures/GuildMember';
+import { PermissionBitfield } from '@utils/PermissionBitfield';
 
 export class Guild extends PartialGuild {
   ownerId!: string;
@@ -106,5 +109,28 @@ export class Guild extends PartialGuild {
     }
 
     if ('threads' in guild) for (const thread of guild.threads) this.threads._add(thread as APIThreadChannel);
+  }
+
+  permissionsOf(memberId: Snowflake | GuildMember): PermissionBitfield {
+    const member = memberId instanceof GuildMember ? memberId : this.members.get(memberId)!;
+    if (member.id === this.ownerId) {
+      return new PermissionBitfield(PermissionBitfield.all);
+    } else {
+      const permissions = this.roles.get(this.id)!.permissions;
+      if (permissions?.isAdmin()) return new PermissionBitfield(PermissionBitfield.all);
+
+      const calculated = new PermissionBitfield(permissions?.bits);
+
+      for (const [, role] of member.roles) {
+        if (!role.permissions) continue;
+        if (role.permissions.isAdmin()) {
+          calculated.add(PermissionBitfield.all);
+          break;
+        } else {
+          calculated.add(role.permissions.bits);
+        }
+      }
+      return calculated;
+    }
   }
 }

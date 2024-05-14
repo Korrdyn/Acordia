@@ -1,7 +1,7 @@
 import { Collection } from '@discordjs/collection';
 import { CloseCodes, WebSocketManager, WebSocketShardEvents } from '@discordjs/ws';
 import { Client } from './Client';
-import { GatewayIntentBitfield } from '@utils/GatewayIntentsBitfield';
+import { GatewayIntentBitfield } from '@utils/GatewayIntentBitfield';
 import { Shard } from './Shard';
 import { ShardEvents } from '@typings/events/ShardEvents';
 import { Status } from '@utils/Status';

@@ -1,5 +1,7 @@
 import { GatewayIntentBits, GatewayPresenceUpdateData } from 'discord-api-types/v10';
-import { GatewayIntentBitfield } from '@utils/GatewayIntentsBitfield';
+import { GatewayIntentBitfield } from '@utils/GatewayIntentBitfield';
+import { Interaction } from '@structures/Interaction';
+import { CooldownLogic } from '@clients/CooldownHandler';
 
 export interface IClientOptions {
   /**
@@ -37,4 +39,29 @@ export interface IClientOptions {
   guildTimeout?: number;
   presence?: GatewayPresenceUpdateData;
   messageCacheSize?: number;
+}
+
+export interface ICommandClientOptions<Context = any, MiddlewareData = any> extends IClientOptions {
+  /**
+   * Custom cooldown logic for use with slash commands
+   *
+   * @type {CooldownLogic}
+   * @memberof ICommandClientOptions
+   */
+  cooldown?: CooldownLogic;
+
+  /**
+   * Context to be passed into the first argument of commands
+   *
+   * @type {Context}
+   * @memberof ICommandClientOptions
+   */
+  context?: Context;
+
+  /**
+   * Middleware that will be ran and the result passed as last argument of commands
+   *
+   * @memberof ICommandClientOptions
+   */
+  middleware?: (interaction: Interaction) => Promise<MiddlewareData> | MiddlewareData;
 }
